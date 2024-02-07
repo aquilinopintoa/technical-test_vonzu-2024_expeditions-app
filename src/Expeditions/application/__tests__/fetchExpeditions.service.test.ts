@@ -1,28 +1,21 @@
-import { HttpResponse, http } from 'msw';
-import { server } from "../../../api-mocks/server";
-import { EXPEDITIONS_URL } from '../../infrastructure/expeditions.api';
+
+import ExpeditionApi from '../../infrastructure/expeditions.api';
 import { ExpeditionDTO } from '../../infrastructure/expedition.dto.type';
 import fetchExpeditionService from '../fetchExpeditions.service';
 
+jest.mock('../../infrastructure/expeditions.api', () => ({
+  fetchExpeditions: jest.fn()
+}))
+
 describe('Expeditions', () => {
-  beforeAll(() => server.listen());
-
-  afterEach(() => server.resetHandlers());
-  
-  afterAll(() => server.close());
-
   it('should return expeditions sent by expedition.api', async () => {
-    const expeditionsFromApi: ExpeditionDTO[] = [generateExpeditionInstance(101878, '0675IVKYM8HNS')]
+    const expeditionsFromApi: ExpeditionDTO[] = [generateExpeditionInstance(101878, '0675IVKYM8HNS')];
 
-    server.use(
-      http.get(EXPEDITIONS_URL, () => {
-        return HttpResponse.json(expeditionsFromApi)
-      })
-    )
+    (ExpeditionApi.fetchExpeditions as jest.Mock).mockResolvedValue(expeditionsFromApi);
 
-    const expeditions = await fetchExpeditionService()
+    const expeditions = await fetchExpeditionService();
 
-    expect(expeditions).toHaveLength(expeditionsFromApi.length)
+    expect(expeditions).toHaveLength(expeditionsFromApi.length);
   })
 })
 
@@ -48,4 +41,4 @@ const generateExpeditionInstance = (id: number, reference: string) => ({
       name: "client test"
     }
   }
-})
+});
