@@ -1,0 +1,9 @@
+.list-tools-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.sort-field_selector label {
+  margin-right: 0.5rem;
+}
