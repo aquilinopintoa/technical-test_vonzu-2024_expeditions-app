@@ -9,7 +9,6 @@ const useFetchExpeditions = () => {
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    setLoading(true)
     fetchExpeditionService()
       .then((expeditionsData) => {
         setExpeditions(expeditionsData)

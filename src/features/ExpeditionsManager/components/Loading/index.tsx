@@ -1,7 +1,7 @@
 import './index.css'
 
 const Loading: React.FC = () => (
-  <span className="loader"></span>
+  <span data-testid="loading" className="loader"></span>
 );
 
 export default Loading
